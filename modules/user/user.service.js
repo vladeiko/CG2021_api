@@ -15,15 +15,7 @@ const createUser = async ({ email, password, first_name, last_name, info_role, i
   await UserModel.getRoleId(user_role);
   const result = await UserModel.createUser({ email, password, first_name, last_name });
   const user_id = result.insertId;
-  console.log("===========================");
-  console.log(`email: "${email}"`);
-  console.log(`password: "${password}"`);
-  console.log(`name: "${first_name}"`);
-  console.log(`surname: "${last_name}"`);
-  console.log(`job: "${info_role}"`);
-  console.log(`team: "${info_team}"`);
-  console.log(`role: "${user_role}"`);
-  console.log("===========================");
+
   await UserModel.createUserInfo({ user_id, info_team, info_role });
   await UserModel.createUserRole({ user_id, user_role });
   return await getUserById(result.insertId);
