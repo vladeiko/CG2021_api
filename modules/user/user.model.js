@@ -15,7 +15,15 @@ const getUserByEmail = async (email) => {
   const connection = await db.getPromise();
 
   const queryString = `
-  SELECT * FROM users WHERE email = ?;
+  SELECT *, user_info.team, user_info.role, user_roles.id_role, roles.role_title
+FROM users
+    inner join user_info
+    on users.id = user_info.id_user
+    inner join user_roles
+    on users.id = user_roles.id_user
+    inner join roles
+    on user_roles.id_role = roles.id
+where email = 'cock@balls.com';
   `;
 
   const result = await connection.query(queryString, [email]);
