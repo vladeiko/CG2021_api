@@ -23,7 +23,7 @@ FROM users
     on users.id = user_roles.id_user
     inner join roles
     on user_roles.id_role = roles.id
-where email = ?;
+    where email = ?;
   `;
 
   const result = await connection.query(queryString, [email]);
