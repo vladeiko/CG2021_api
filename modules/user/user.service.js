@@ -1,6 +1,7 @@
 const UserModel = require("./user.model");
 
 const getUserById = async (id) => {
+  console.log(`user id: "${id}"`);
   return await UserModel.getUserById(id);
 };
 

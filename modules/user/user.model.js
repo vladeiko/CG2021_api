@@ -6,8 +6,8 @@ const getUserById = async (id) => {
   const queryString = `
   SELECT * FROM users WHERE id = ?;
   `;
-
   const result = await connection.query(queryString, [id]);
+  console.log(result[0][0]);
   return result[0][0];
 };
 
@@ -23,7 +23,7 @@ FROM users
     on users.id = user_roles.id_user
     inner join roles
     on user_roles.id_role = roles.id
-where email = 'cock@balls.com';
+where email = ?;
   `;
 
   const result = await connection.query(queryString, [email]);

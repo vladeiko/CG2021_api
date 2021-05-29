@@ -1,3 +1,4 @@
+const userService = require("../user/user.service");
 const NewsService = require("./news.service");
 
 const getNewsList = async (req, res) => {
@@ -6,14 +7,16 @@ const getNewsList = async (req, res) => {
 };
 
 const getPostById = async (req, res) => {
-  const id = req.body.data;
+  const id = req.params.id;
   const post = await NewsService.getPostById(id);
   const comments = await NewsService.getCommentByPostId(id);
-  res.status(200).json({ post: post, comments: comments });
+  const user = await userService.getUserById(post.id_author);
+  res.status(200).json({ post: post, user: user, comments: comments });
 };
 
 const createNewPost = async (req, res) => {
-  const { id_author, title, content } = req.body.data;
+  const id_author = req.user.id;
+  const { title, content } = req.body.data;
   const result = await NewsService.createNewPost({
     id_author,
     title,
@@ -23,7 +26,8 @@ const createNewPost = async (req, res) => {
 };
 
 const createNewComment = async (req, res) => {
-  const { id_news_item, id_author, text } = req.body.data;
+  const id_author = req.user.id;
+  const { id_news_item, text } = req.body.data;
   const result = await NewsService.createNewComment({
     id_news_item,
     id_author,

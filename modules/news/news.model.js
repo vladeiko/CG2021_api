@@ -4,7 +4,8 @@ const getNewsList = async () => {
   const connection = await db.getPromise();
 
   const queryString = `
-    SELECT * FROM news
+    SELECT *, users.first_name, users.last_name FROM news
+    INNER JOIN users ON news.id_author = users.id;
     `;
 
   const result = await connection.query(queryString);
@@ -15,7 +16,9 @@ const getCommentByPostId = async (id) => {
   const connection = await db.getPromise();
 
   const queryString = `
-    SELECT * FROM news_comments WHERE id_news_item = ?; 
+    SELECT *, users.first_name, users.last_name FROM news_comments
+    INNER JOIN users ON news_comments.id_author = users.id
+    WHERE news_comments.id_news_item = ?; 
     `;
 
   const result = await connection.query(queryString, [id]);
@@ -26,9 +29,10 @@ const getPostById = async (id) => {
   const connection = await db.getPromise();
 
   const queryString = `
-    SELECT * FROM news WHERE id = ?;
+  SELECT *, users.first_name, users.last_name FROM news
+  LEFT JOIN users ON news.id_author = users.id
+   WHERE news.id = ?;
     `;
-
   const result = await connection.query(queryString, [id]);
   return result[0][0];
 };
