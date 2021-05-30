@@ -4,7 +4,7 @@ const getQuestionsList = async () => {
   const connection = await db.getPromise();
 
   const queryString = `
-    SELECT *, users.first_name, users.last_name FROM questions
+    SELECT *, questions.id as id_question, users.first_name, users.last_name FROM questions
     INNER JOIN users ON questions.id_author = users.id;
     `;
 

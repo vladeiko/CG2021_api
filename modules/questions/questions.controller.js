@@ -9,7 +9,7 @@ const getQuestionById = async (req, res) => {
   const id = req.params.id;
   const post = await QuestionsService.getQuestionById(id);
   const Answerss = await QuestionsService.getAnswersByQuestionId(id);
-  res.status(200).json({ post: post, Answerss: Answerss });
+  res.status(200).json({ post: post, answers: Answerss });
 };
 
 const createNewQuestion = async (req, res) => {
