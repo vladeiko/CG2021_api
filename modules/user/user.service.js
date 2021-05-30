@@ -1,12 +1,15 @@
 const UserModel = require("./user.model");
 
 const getUserById = async (id) => {
-  console.log(`user id: "${id}"`);
   return await UserModel.getUserById(id);
 };
 
 const getUserByEmail = async (email) => {
   return await UserModel.getUserByEmail(email);
+};
+
+const getUserRole = async (id) => {
+  return await UserModel.getUserRole(id);
 };
 
 const createUser = async ({ email, password, first_name, last_name, info_role, info_team, user_role }) => {
@@ -28,4 +31,4 @@ const getUserPasswordByEmail = async (email) => {
   return user.password;
 };
 
-module.exports = { createUser, getUserById, getUserByEmail, getUserPasswordByEmail };
+module.exports = { createUser, getUserById, getUserByEmail, getUserRole, getUserPasswordByEmail };
