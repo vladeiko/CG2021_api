@@ -7,7 +7,6 @@ const getUserById = async (id) => {
   SELECT * FROM users WHERE id = ?;
   `;
   const result = await connection.query(queryString, [id]);
-  console.log(result[0][0]);
   return result[0][0];
 };
 
@@ -28,6 +27,20 @@ FROM users
 
   const result = await connection.query(queryString, [email]);
   return result[0][0];
+};
+
+const getUserRole = async (id_user) => {
+  const connection = await db.getPromise();
+
+  const queryString = `
+  SELECT *, user_roles.id_role, roles.role_title
+   from users inner join  user_roles on users.id = user_roles.id_user
+   left join roles on user_roles.id_role = roles.id
+  where users.id = ?;
+  `;
+
+  const result = await connection.query(queryString, [id_user]);
+  return result[0];
 };
 
 const getRoleId = async (role_title) => {
@@ -80,4 +93,28 @@ const createUserRole = async ({ user_id, user_role }) => {
   return result[0];
 };
 
-module.exports = { createUser, getUserById, getUserByEmail, createUserInfo, createUserRole, getRoleId };
+const addTeamToTheUser = async ({ id, team, role }) => {
+  const connection = await db.getPromise();
+  const params = [team, role, id];
+
+  const queryString = `
+  UPDATE user_info
+  SET
+    team = ?,
+    role = ?
+  WHERE id_user = ?;
+  `;
+
+  const result = await connection.query(queryString, params);
+  return result[0];
+};
+module.exports = {
+  createUser,
+  getUserById,
+  getUserByEmail,
+  getUserRole,
+  createUserInfo,
+  createUserRole,
+  getRoleId,
+  addTeamToTheUser,
+};
